@@ -1,0 +1,31 @@
+*Name: Asma Razick
+*GNumber: G01310157
+*Section: CS 450-001
+
+
+-----------COUNTING COMMANDS-----------
+db.workshops.countDocuments()
+db.registrations.countDocuments()
+
+
+
+
+
+--------------------------------------------------------QUERIES---------------------------------------------------------------------------------------------
+db.workshops.find({Category: 'Tech'}, {Title : 1, EventDate: 1, _id: 0})
+
+db.workshops.find({Category: 'Career', Capacity: 60}, {WorkshopID: 1, Title: 1, Capacity: 1, _id: 0})
+
+db.workshops.find({Location: {$in: ['Innovation Hall 204', 'Engineering 110']}},{Title: 1, _id: 0})
+
+db.workshops.find({Category: 'Wellness', EventDate: {$gte:"2025-11-13"}}, {WorkshopID: 1, _id: 0})
+
+db.workshops.aggregate([{$lookup: {from: "registrations", localField: "WorkshopID",foreignField: "WorkshopID", as: "registration"}},{$match: {registration: {$size: 0}}},{$project: {Title: 1, _id: 0}}])
+
+db.workshops.aggregate([{$lookup: {from: "registrations", localField: "WorkshopID",foreignField: "WorkshopID", as: "registration"}},{$match: {registration: {$size: 3}}},{$project: {WorkshopID: 1, _id: 0}}])
+
+db.workshops.aggregate([{$lookup: {from: "registrations",localField: "WorkshopID",foreignField: "WorkshopID", as: "registration"}},{$match: {"registration.0": { $exists: true },"registration.0.StudentID": { $ne: "G01230001" }}},{$project: { Title: 1, _id: 0 }}])
+
+db.registrations.aggregate([{$group: {_id: "$StudentID", workshopCount: { $sum: 1 }}},{$match: {workshopCount: { $gte: 2 }}},{$project: { _id: 1 }}])
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+

@@ -1,6 +1,4 @@
 --Name: Asma Razick
---GNumber: G01310157
---Section: CS 450-001
 
 SET LINESIZE 1000;
 SET PAGESIZE 0;
